@@ -40,7 +40,11 @@ class Piece:
         self.pos = pygame.math.Vector2(self.col, self.row) 
         
         self.color = color
-        
+        if self.color == 'w':
+            self.imgToDraw = W[self.img]
+        else:
+            self.imgToDraw = B[self.img]
+
         self.selected = False
 
     def __str__(self):
@@ -50,23 +54,20 @@ class Piece:
         pass
 
     def select(self):
+        self.imgToDraw = pygame.transform.scale(self.imgToDraw, (75, 75,))
         self.selected = True
     
     def unselect(self):
+        self.imgToDraw = pygame.transform.scale(self.imgToDraw, (64, 64,))
         self.selected = False
 
     def isSelected(self):
         return self.selected
 
     def draw(self, screen):
-        if self.color == 'w':
-            imgToDraw = W[self.img]
-            imgRect = imgToDraw.get_rect()
-            imgRect.center = ((self.col*SQUARE_SIZE)-(SQUARE_SIZE//2), ((9-self.row)*SQUARE_SIZE)-(SQUARE_SIZE//2))
-        else:
-            imgToDraw = B[self.img]
-            imgRect = imgToDraw.get_rect()
-            imgRect.center = ((self.col*SQUARE_SIZE)-(SQUARE_SIZE//2), ((9-self.row)*SQUARE_SIZE)-(SQUARE_SIZE//2))
+        imgToDraw = self.imgToDraw
+        imgRect = imgToDraw.get_rect()
+        imgRect.center = ((self.col*SQUARE_SIZE)-(SQUARE_SIZE//2), ((9-self.row)*SQUARE_SIZE)-(SQUARE_SIZE//2))
 
         screen.blit(imgToDraw, imgRect)
 
